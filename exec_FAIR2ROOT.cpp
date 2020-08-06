@@ -83,8 +83,6 @@ int main (int argc, char ** argv)
   for(int curr_file=1; ; curr_file++) {
     std::string run_file_name(Form("%s/%s_%06d.dat", gRun->GetRunFilePathName(), gRun->GetRunNumber(), curr_file));
     
-    printf("Reading file %s\n", run_file_name.c_str());     
-    
     const unsigned int SizeRead=TheReader->Open(run_file_name.c_str());
         
     if(SizeRead==0 && curr_file>1) {
@@ -94,6 +92,8 @@ int main (int argc, char ** argv)
       printf("\nError: failed to open source file %s\nAborting!\n", run_file_name.c_str()); 
       exit(4);
     }
+    
+    printf("Successfully read file %s\n", run_file_name.c_str());     
   }
   //
   

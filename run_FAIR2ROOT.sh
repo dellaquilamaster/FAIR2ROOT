@@ -1,7 +1,6 @@
 #!/bin/bash
 
 DATA_PATH="/mnt/md0/data/2018_TAUDEU_LNL/"
-RUN_PREFIX="R"
 
 first_run=$1
 
@@ -20,37 +19,28 @@ if [ ! -z "$3" ]; then
   parallel_processes=$3
 fi
 
-for run_num in `seq $first_run $last_run`
+for folder in $(ls ${DATA_PATH});
 do
   re='^[0-9]+$'
 
-  if ! [[ $run_num =~ $re ]] ; then
-    echo "Error: Invalid run number" >&2; exit 1
+  if ! [[ ${folder} =~ $re ]] ; then
+       continue
   fi
-  
-  for file_name in ${DATA_PATH}${RUN_PREFIX}${run_num}_*
-  do
-  
-    if [ -z "$3" ]; then
-  
-      if [ ! -f $file_name ]; then
-        echo "Skipping run $run_num!"
-        continue
-      fi
-      run_name="${file_name##*/$RUN_PREFIX}"
-      echo "Unpacking file $run_name..."
-      eval './exec_Midas2ROOT.exe --run=${run_name}'
-      
-    else 
     
-      if [ ! -f $file_name ]; then
-        echo "echo Skipping run $run_num!" >> parallel_runs.txt
-        continue
+    if [ -z $3 ]
+    then
+      if [ ${folder} -le ${last_run} ] && [ ${folder} -ge ${first_run} ] ;
+      then
+        echo "Unpacking file $run_name..."
+        eval './exec_FAIR2ROOT.exe --run=${folder}'
       fi
-      run_name="${file_name##*/$RUN_PREFIX}"
-      echo "echo Unpacking file $run_name... && eval './exec_Midas2ROOT.exe --run=${run_name}'" >> parallel_runs.txt      
+    else
+      if [ ${folder} -le ${last_run} ] && [ ${folder} -ge ${first_run} ] ;
+      then
+        echo "echo Unpacking file $run_name... && eval './exec_FAIR2ROOT.exe --run=${folder}'" >> parallel_runs.txt      
+      fi
+    
     fi
-  done
 done
 
 if [ ! -z "$3" ]; then

@@ -70,7 +70,9 @@ unsigned int F2RReader::Open(const char * file_name)
       NewEvent.event_data.push_back(TempWord);
       //
 //       printf("%u) %02x%02x %02x%02x\n", WordsRead, (unsigned char)*((char*)FileBuffer+(fWordSize*WordsRead)+1), (unsigned char)*((char*)FileBuffer+(fWordSize*WordsRead)+0), (unsigned char)*((char*)FileBuffer+(fWordSize*WordsRead)+3), (unsigned char)*((char*)FileBuffer+(fWordSize*WordsRead)+2));
-//       printf("%x %x -> %o, mod=%d\n", TempWord, FTNMask, TempWord&FTNMask, TempWord&VSNMask-1);
+//       if((TempWord&FTNMask)!=0) {
+//         printf("%x -> mod=%d\n", TempWord, (TempWord&VSNMask)-1);
+//       }
       if(TempWord==0xFFFFFFFF) {
         //Reached end of the event
 //         getchar();

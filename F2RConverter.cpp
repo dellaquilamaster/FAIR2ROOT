@@ -130,10 +130,12 @@ void F2RConverter::Process()
       unsigned int NumWordsInModule=0;
       //
       for( ; (CurrentEventData[NumWordsInModule]&FTNMask)==0; NumWordsInModule++) {
+//         printf("%x\n", CurrentEventData[NumWordsInModule]);
       }
       //
       const int NumMod=(CurrentEventData[NumWordsInModule]&VSNMask) - 1;
       F2RModuleMask * ModuleMask = gLayout->GetModuleMask(NumMod);
+//       printf("%x -> mod=%d\n", CurrentEventData[NumWordsInModule], NumMod);
       //
       
       //
@@ -141,8 +143,8 @@ void F2RConverter::Process()
       for(unsigned int i_module=0; i_module<NumWordsInModule; i_module++)
       {       
         fevt->fgid[fevt->fmulti]=NumMod;
-        fevt->fch[fevt->fmulti]=ModuleMask->DWN(EventData[i_glob]);
-        fevt->fampl[fevt->fmulti]=EventData[i_glob];
+        fevt->fch[fevt->fmulti]=ModuleMask->DWN(CurrentEventData[i_module]);
+        fevt->fampl[fevt->fmulti]=CurrentEventData[i_module];
         fevt->fmulti++;
       }
       //
